@@ -24,11 +24,37 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+        
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <header className="w-full">
+		      <div className="flex items-center">
+			      <div className="p-2 navHover">
+				       <h1 className="text-3xl">Spot-moi</h1>
+			      </div>
+			     <div className="flex-1"></div>
+			     <div className="p-2 navHover">
+				    <h2 className="text-3xl"><a>Vos artistes</a></h2>
+			   </div>
+			    <div className="p-2">
+				    <select name="language" className="bg-black py-1 px-2 rounded-md text-whites">
+					   <option value="fr">Français</option>
+					   <option value="en">English</option>
+				   </select>
+			   </div>
+		     </div>
+	     </header>
+       <main className="w-5xl mx-auto my-4">
         {children}
+        </main>
+        <footer className="w-full">
+		     <div className="py-1">
+			    <div>
+				   <p className="text-center">&copy; J'ai yoink le template de l'enseignant</p>
+			    </div>
+		     </div>
+	      </footer>
       </body>
+      
     </html>
   );
 }
