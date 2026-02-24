@@ -3,6 +3,8 @@ import Image from "next/image";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {Artist} from "./_types/artiste"
+import{Album} from "./_types/album"
+import Link from "next/link";
 
  const CLIENT_ID = "b58e6ec47b794973ac4757d581963dd7";
  const CLIENT_SECRET = "bd1e99b84cce48de86d6a4e921cda2ad";
@@ -10,6 +12,7 @@ import {Artist} from "./_types/artiste"
 export default function Home() {
   const [token, setToken] = useState(""); 
   const [artistName, setArtistName] = useState<string>("");
+  const [albumName, setAlbumName] = useState<Album[]>([]);
   const [artist, setArtist] = useState<Artist[]>([]);
    useEffect(() => {
 
@@ -45,6 +48,21 @@ export default function Home() {
         sessionStorage.setItem("artiste",JSON.stringify([...artist,newArtist]))
 
     }
+    async function getAlbums(artistId : string){
+    
+         const response = await axios.get("https://api.spotify.com/v1/artists/" + artistId + "/albums?include_groups=album,single", {
+           headers : {
+            "Content-Type" : "application/x-www-form-urlencoded",
+            "Authorization" : "Bearer " + token}});
+      console.log(response.data);
+      
+      let albums : Album[] = [];
+      for(let i = 0; i < response.data.items.length; i++){
+        albums.push(new Album(response.data.items[i].id, response.data.items[i].name, response.data.items[i].images[0].url));
+      }
+       return albums;
+    
+    }
     function clearArtists() {
       setArtist([]);
     sessionStorage.removeItem("artiste");
@@ -64,13 +82,12 @@ export default function Home() {
 					<div className="basis-1/3">
 						<div className="m-1 p-1 artist">     
 							{artist.map((a) => (
-                <div key={a.id}>
-                  <h4>{a.name}</h4>
-                  <img src={a.imageUrl} alt={a.name} />
-                </div>))
-              }
-							<a><button className="lightButton mt-1 mr-1">Concerts</button></a>
-							<a><button className="lightButton mt-1">Albums</button></a>
+                <div key={a.id} className="m-1 p-1 artist">
+                   <h4>{a.name}</h4>
+                   <img src={a.imageUrl} alt={a.name} />
+                    <Link href={`/concert/${a.id}`}><button className="lightButton mt-1 mr-1">Concerts</button></Link>
+                    <Link href={`/album/${a.id}`}> <button onClick={() => getAlbums(a.id)}  className="lightButton mt-1">Albums</button></Link></div>
+                    ))}
 						</div>
 					</div>
 				</div>
