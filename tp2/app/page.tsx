@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {Artist} from "./_types/artiste"
@@ -12,7 +11,6 @@ import Link from "next/link";
 export default function Home() {
   const [token, setToken] = useState(""); 
   const [artistName, setArtistName] = useState<string>("");
-  const [albumName, setAlbumName] = useState<Album[]>([]);
   const [artist, setArtist] = useState<Artist[]>([]);
    useEffect(() => {
 
@@ -79,18 +77,19 @@ export default function Home() {
 			<div className="flex-3 p-3 text-center">
 				<h2 className="text-2xl font-bold">Vos artistes</h2>
 				<div className="flex flex-wrap mt-2">
-					<div className="basis-1/3">
-						<div className="m-1 p-1 artist">     
-							{artist.map((a) => (
-                <div key={a.id} className="m-1 p-1 artist">
+          	{artist.map((a,index) => (
+					<div key={index} className="basis-1/3">
+						  
+                <div  className="m-1 p-1 artist">
                    <h4>{a.name}</h4>
                    <img src={a.imageUrl} alt={a.name} />
-                    <Link href={`/concert/${a.id}`}><button className="lightButton mt-1 mr-1">Concerts</button></Link>
-                    <Link href={`/album/${a.id}`}> <button onClick={() => getAlbums(a.id)}  className="lightButton mt-1">Albums</button></Link></div>
-                    ))}
+                    <a href={`/concert/${a.id}`}><button className="lightButton mt-1 mr-1">Concerts</button></a>
+                    <a href={`/album/${a.id}`}> <button onClick={() => getAlbums(a.id)}  className="lightButton mt-1">Albums</button></a></div>
 						</div>
-					</div>
+				
+           ))}
 				</div>
+        
 				<div className="flex justify-center mt-2">
 					<button onClick={clearArtists} className="lightButton">Vider les favoris</button>
 				</div>

@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
@@ -10,18 +9,19 @@ import { Album } from "@/app/_types/album";
 
 export default function Albums() {
  const params = useParams<{ id : string }>();
- const [token, setToken] = useState(""); 
  const [albumName, setAlbumName] = useState<Album[]>([]);
  const [artisteName, setArtisteName] = useState("");
- useEffect(() => {
- 
-		 connectAlbum();
-	 }, []);
-	
-	async function connectAlbum(){
-		const token = await connect();
-		getAlbums(token);
-	}
+ const [token, setToken] = useState<string>("");
+  
+useEffect(() => {
+    connect();
+}, []);
+
+useEffect(() => {
+    if (token && params.id) {
+        getAlbums(token);
+    }
+}, [token, params.id]);
 	
  async function connect() {
         const response = await axios.post("https://accounts.spotify.com/api/token",
@@ -37,7 +37,7 @@ export default function Albums() {
     }
  async function getAlbums(token : string){
 
-     const response = await axios.get("https://api.spotify.com/v1/artists/" + params.id + "/albums?include_groups=album,single", {
+     const response = await axios.get('https://api.spotify.com/v1/artists/' + params.id + '/albums?include_groups=album,single', {
        headers : {
         "Content-Type" : "application/x-www-form-urlencoded",
         "Authorization" : "Bearer " + token}});
@@ -46,8 +46,9 @@ export default function Albums() {
   let albums : Album[] = [];
   for(let i = 0; i < response.data.items.length; i++){
     albums.push(new Album(response.data.items[i].id, response.data.items[i].name, response.data.items[i].images[0].url));
-	setArtisteName( response.data.items[i].artists[0].name);
+	 setArtisteName(response.data.items[i].artists[0].name);
   }
+ 
    setAlbumName(albums);
 
 }
@@ -57,9 +58,9 @@ export default function Albums() {
 		<div className="flex text-center m-3 flex-wrap">
 			<div className="basis-1/4">
 			{albumName.map((a) => (
-				<div className="m-1 text-center p-1 artist">
+				<div key={a.name} className="m-1 text-center p-1 artist">
 					<h4>{a.name}</h4>
-					<img src={a.imageUrl} alt={a.id} />
+					<img src={a.image} alt={a.name} />
 					<a><button className="lightButton mt-1">Chansons</button></a>
 				</div>
 				))}
