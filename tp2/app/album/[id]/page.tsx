@@ -15,13 +15,14 @@ export default function Albums() {
  const [artisteName, setArtisteName] = useState("");
  useEffect(() => {
  
-		 connect();
+		 connectAlbum();
 	 }, []);
-	 useEffect(() => {
-  if (token) {
-    getAlbums(params.id);
-  }
-}, [token]);
+	
+	async function connectAlbum(){
+		const token = await connect();
+		getAlbums(token);
+	}
+	
  async function connect() {
         const response = await axios.post("https://accounts.spotify.com/api/token",
             new URLSearchParams({ grant_type: "client_credentials" }), {
@@ -34,9 +35,9 @@ export default function Albums() {
         setToken(response.data.access_token);
 
     }
- async function getAlbums(artistId : string){
+ async function getAlbums(token : string){
 
-     const response = await axios.get("https://api.spotify.com/v1/artists/" + artistId + "/albums?include_groups=album,single", {
+     const response = await axios.get("https://api.spotify.com/v1/artists/" + params.id + "/albums?include_groups=album,single", {
        headers : {
         "Content-Type" : "application/x-www-form-urlencoded",
         "Authorization" : "Bearer " + token}});
@@ -45,6 +46,7 @@ export default function Albums() {
   let albums : Album[] = [];
   for(let i = 0; i < response.data.items.length; i++){
     albums.push(new Album(response.data.items[i].id, response.data.items[i].name, response.data.items[i].images[0].url));
+	setArtisteName( response.data.items[i].artists[0].name);
   }
    setAlbumName(albums);
 
@@ -56,8 +58,8 @@ export default function Albums() {
 			<div className="basis-1/4">
 			{albumName.map((a) => (
 				<div className="m-1 text-center p-1 artist">
-					<h4>{artisteName}</h4>
-					<img src="images/disc.png" alt={a.id} />
+					<h4>{a.name}</h4>
+					<img src={a.imageUrl} alt={a.id} />
 					<a><button className="lightButton mt-1">Chansons</button></a>
 				</div>
 				))}
