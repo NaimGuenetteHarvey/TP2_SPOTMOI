@@ -19,7 +19,7 @@ useEffect(() => {
 
 useEffect(() => {
     if (token && params.id) {
-        getAlbums(token);
+        getAlbums();
     }
 }, [token, params.id]);
 	
@@ -35,7 +35,7 @@ useEffect(() => {
         setToken(response.data.access_token);
 
     }
- async function getAlbums(token : string){
+ async function getAlbums(){
 
      const response = await axios.get('https://api.spotify.com/v1/artists/' + params.id + '/albums?include_groups=album,single', {
        headers : {
@@ -53,19 +53,21 @@ useEffect(() => {
 
 }
   return (
-		<div className="flex">
+		<main className="w-5xl mx-auto my-4">
 			<h2 className="text-center text-2xl py-1">Albums de {artisteName}</h2>
 		<div className="flex text-center m-3 flex-wrap">
-			<div className="basis-1/4">
-			{albumName.map((a) => (
-				<div key={a.name} className="m-1 text-center p-1 artist">
+            {albumName.map((a) => (
+			<div key={a.name} className="basis-1/4">
+			
+				<div  className="m-1 text-center p-1 artist">
 					<h4>{a.name}</h4>
 					<img src={a.image} alt={a.name} />
-					<a href={`app\chanson\[id]\page.tsx`}><button className="lightButton mt-1">Chansons</button></a>
+					<a href={`/chanson/${a.id}`}><button className="lightButton mt-1">Chansons</button></a>
 				</div>
-				))}
-			</div>
+            </div>
+			))}
+		
 		</div>
-		</div>
+	</main>
   );
 }
