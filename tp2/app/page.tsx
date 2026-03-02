@@ -82,7 +82,7 @@ export default function Home() {
                 <div  className="m-1 p-1 artist">
                    <h4>{a.name}</h4>
                    <img src={a.imageUrl} alt={a.name} />
-                    <a href={`/concert/${a.id}`}><button className="lightButton mt-1 mr-1">Concerts</button></a>
+                    <a href={`/concerts/${a.id}`}><button className="lightButton mt-1 mr-1">Concerts</button></a>
                     <a href={`/album/${a.id}`}> <button onClick={() => getAlbums(a.id)}  className="lightButton mt-1">Albums</button></a></div>
 						</div>
 				
