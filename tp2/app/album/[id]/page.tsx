@@ -61,7 +61,7 @@ useEffect(() => {
 				<div key={a.name} className="m-1 text-center p-1 artist">
 					<h4>{a.name}</h4>
 					<img src={a.image} alt={a.name} />
-					<a><button className="lightButton mt-1">Chansons</button></a>
+					<a href={`app\chanson\[id]\page.tsx`}><button className="lightButton mt-1">Chansons</button></a>
 				</div>
 				))}
 			</div>
