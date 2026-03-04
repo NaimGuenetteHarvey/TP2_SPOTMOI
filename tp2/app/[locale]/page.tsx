@@ -1,8 +1,8 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import {Artist} from "./_types/artiste"
-import{Album} from "./_types/album"
+import {Artist} from "../_types/artiste"
+import{Album} from "../_types/album"
 
  const CLIENT_ID = "b58e6ec47b794973ac4757d581963dd7";
  const CLIENT_SECRET = "bd1e99b84cce48de86d6a4e921cda2ad";
