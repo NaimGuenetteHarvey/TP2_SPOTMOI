@@ -7,11 +7,10 @@ const CLIENT_ID = "b58e6ec47b794973ac4757d581963dd7";
 const CLIENT_SECRET = "bd1e99b84cce48de86d6a4e921cda2ad";
 const ApiKey = "AIzaSyC-ICUIKLPmZJHyGmN7whyt5Bs3H7mSBSk";
 export default function Chanson() {
-    const params = useParams<{ id: string }>();
+    const params = useParams<{ id : string }>();
     const [token, setToken] = useState<string>("");
     const [albumName, setAlbumName] = useState<string>("");
     const [songs, setSongs] = useState<string[]>([]);
-    const [songName, setSongName] = useState<string>("");
 
     const [videoUrl, setVideoUrl] = useState<string | undefined>(undefined);
     useEffect(() => {
@@ -55,9 +54,9 @@ export default function Chanson() {
 
     }
 
-    async function searchVideo() {
+    async function searchVideo(song:string) {
         
-        const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?type=video&part=id&maxResults=1&key=${ApiKey}&q=${songName}+${albumName}`);
+        const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?type=video&part=id&maxResults=1&key=${ApiKey}&q=${song}+${albumName}`);
         console.log(response.data);
 
         setVideoUrl("https://www.youtube.com/embed/" + response.data.items[0].id.videoId);
@@ -71,7 +70,7 @@ export default function Chanson() {
                     <div key={index} className="basis-1/5">
                         <div className="m-1 text-center p-1 artist">
                             <h4>{name}</h4>
-                            <button onClick={() => searchVideo()} className="lightButton form-control mt-1">Écouter</button>
+                            <button onClick={() => searchVideo(name)} className="lightButton form-control mt-1">Écouter</button>
                         </div>
                     </div>
                 ))}
