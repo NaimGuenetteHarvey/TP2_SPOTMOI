@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-
+import { useTranslations } from "next-intl";
 const CLIENT_ID = "b58e6ec47b794973ac4757d581963dd7";
 const CLIENT_SECRET = "bd1e99b84cce48de86d6a4e921cda2ad";
 const ApiKey = "AIzaSyC-ICUIKLPmZJHyGmN7whyt5Bs3H7mSBSk";
@@ -11,7 +11,7 @@ export default function Chanson() {
     const [token, setToken] = useState<string>("");
     const [albumName, setAlbumName] = useState<string>("");
     const [songs, setSongs] = useState<string[]>([]);
-
+    const t = useTranslations('chanson');
     const [videoUrl, setVideoUrl] = useState<string | undefined>(undefined);
     useEffect(() => {
         connect();
@@ -64,13 +64,13 @@ export default function Chanson() {
 
     return (
         <main className="w-5xl mx-auto my-4">
-            <h2 className="text-center text-2xl py-1">Chansons de {albumName}</h2>
+            <h2 className="text-center text-2xl py-1">{t("title", { album: albumName })}</h2>
             <div className="flex m-2 flex-wrap">
                 {songs.map((name, index) => (
                     <div key={index} className="basis-1/5">
                         <div className="m-1 text-center p-1 artist">
                             <h4>{name}</h4>
-                            <button onClick={() => searchVideo(name)} className="lightButton form-control mt-1">Écouter</button>
+                            <button onClick={() => searchVideo(name)} className="lightButton form-control mt-1"> {t("listen")}</button>
                         </div>
                     </div>
                 ))}

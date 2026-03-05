@@ -1,0 +1,26 @@
+{
+  "Home": {
+    "title": "Spot-moi",
+    "addArtist": "Ajouter un artiste",
+    "search": "Rechercher",
+    "yourArtists": "Vos artistes",
+    "concerts": "Concerts",
+    "albums": "Albums",
+    "clearFavorites": "Vider les favoris"
+  },
+  "album": {
+    "title": "Albums de {artist}",
+    "songs": "Chansons"
+  },
+  "chanson": {
+    "title": "Chansons de {album}",
+    "listen": "Écouter"
+  },
+  "concerts": {
+    "title": "Concerts de {artist}",
+    "date": "Date",
+    "country": "Pays",
+    "city": "Ville"
+  }
+  
+}

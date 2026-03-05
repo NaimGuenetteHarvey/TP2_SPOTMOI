@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { show } from "@/app/_types/show";
+import { useTranslations } from "next-intl";
 const api ="2b32475766802ac01eefda45e9e42ea0"
 
 export default function Concerts() {
+    const t = useTranslations('concerts')
 const params = useParams<{name: string }>();
 const [event, setEvent] = useState<show[]>([]);
 const center = { lat: -4, lng: -40 };
@@ -33,7 +35,7 @@ const { isLoaded } = useJsApiLoader({
        }
 return(
     <main className="w-5xl mx-auto my-4">
-		<h2 className="text-center text-2xl py-1">Concerts de {params.name}</h2>
+		<h2 className="text-center text-2xl py-1">{t("title", { artist: params.name })}</h2>
 
 		<div className="mx-auto w-2xl artist">
 			{ isLoaded && 

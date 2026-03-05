@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Album } from "@/app/_types/album";
-
+import { useTranslations } from "next-intl";
  const CLIENT_ID = "b58e6ec47b794973ac4757d581963dd7";
  const CLIENT_SECRET = "bd1e99b84cce48de86d6a4e921cda2ad";
 
@@ -12,7 +12,7 @@ export default function Albums() {
  const [albumName, setAlbumName] = useState<Album[]>([]);
  const [artisteName, setArtisteName] = useState("");
  const [token, setToken] = useState<string>("");
-  
+ const t = useTranslations('album');
 useEffect(() => {
     connect();
 }, []);
@@ -54,7 +54,7 @@ useEffect(() => {
 }
   return (
 		<main className="w-5xl mx-auto my-4">
-			<h2 className="text-center text-2xl py-1">Albums de {artisteName}</h2>
+			<h2 className="text-center text-2xl py-1">{t("title", { artist: artisteName })}</h2>
 		<div className="flex text-center m-3 flex-wrap">
             {albumName.map((a) => (
 			<div key={a.name} className="basis-1/4">
@@ -62,7 +62,7 @@ useEffect(() => {
 				<div  className="m-1 text-center p-1 artist">
 					<h4>{a.name}</h4>
 					<img src={a.image} alt={a.name} />
-					<a href={`/chanson/${a.id}`}><button className="lightButton mt-1">Chansons</button></a>
+					<a href={`/chanson/${a.id}`}><button className="lightButton mt-1">{t("songs")}</button></a>
 				</div>
             </div>
 			))}

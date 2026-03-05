@@ -1,0 +1,25 @@
+{
+  "Home": {
+    "title": "Spot-me",
+    "addArtist": "Add an artist",
+    "search": "Search",
+    "yourArtists": "Your artists",
+    "concerts": "Concerts",
+    "albums": "Albums",
+    "clearFavorites": "Clear favorites"
+  },
+  "album": {
+    "title": "{artist}'s albums",
+    "songs": "Songs"
+  },
+   "chanson": {
+    "title": "Songs from {album}",
+    "listen": "Listen"
+  },
+   "concerts": {
+    "title": "{artist}'s concerts",
+    "date": "Date",
+    "country": "Country",
+    "city": "City"
+  }
+}
