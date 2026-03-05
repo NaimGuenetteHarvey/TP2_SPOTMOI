@@ -1,10 +1,10 @@
 "use client";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import {Artist} from "../_types/artiste"
-import{Album} from "../_types/album"
+import {Artist} from "../../_types/artiste"
+import{Album} from "../../_types/album"
 import { useTranslations } from "next-intl";
-
+import { spotifyRequest } from "@/app/spotify-interceptor";
  const CLIENT_ID = "b58e6ec47b794973ac4757d581963dd7";
  const CLIENT_SECRET = "bd1e99b84cce48de86d6a4e921cda2ad";
 
@@ -30,17 +30,12 @@ export default function Home() {
             }
         });
         console.log(response.data);
-        setToken(response.data.access_token);
+        localStorage.setItem("token",response.data.access_token);
 
     }
  async function getArtist() {
 
-        const response = await axios.get('https://api.spotify.com/v1/search?type=artist&offset=0&limit=1&q=' + artistName, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "Authorization": "Bearer " + token
-            }
-        });
+        const response = await spotifyRequest.get('https://api.spotify.com/v1/search?type=artist&offset=0&limit=1&q=' + artistName );
         console.log(response.data);
         const newArtist = new Artist(response.data.artists.items[0].id,response.data.artists.items[0].name,response.data.artists.items[0].images[0].url);
         setArtist((artiste) => [...artiste, newArtist]);
@@ -49,11 +44,8 @@ export default function Home() {
     }
     async function getAlbums(artistId : string){
     
-         const response = await axios.get("https://api.spotify.com/v1/artists/" + artistId + "/albums?include_groups=album,single", {
-           headers : {
-            "Content-Type" : "application/x-www-form-urlencoded",
-            "Authorization" : "Bearer " + token}});
-      console.log(response.data);
+         const response = await axios.get("https://api.spotify.com/v1/artists/" + artistId + "/albums?include_groups=album,single")
+         console.log(response.data);
       
       let albums : Album[] = [];
       for(let i = 0; i < response.data.items.length; i++){

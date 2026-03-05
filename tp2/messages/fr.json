@@ -21,6 +21,11 @@
     "date": "Date",
     "country": "Pays",
     "city": "Ville"
+  },
+    "layout": {
+    "title": "Spot-moi",
+    "yourArtists": "Vos artistes",
+    "footer" : "J'ai yoink le template de l'enseignant"
   }
   
 }

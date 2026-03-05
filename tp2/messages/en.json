@@ -21,5 +21,10 @@
     "date": "Date",
     "country": "Country",
     "city": "City"
+  },
+  "layout": {
+    "title": "Spot-me",
+    "yourArtists": "Your artists",
+    "footer" : "I used the teacher,s template"
   }
 }

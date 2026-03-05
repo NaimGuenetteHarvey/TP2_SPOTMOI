@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Album } from "@/app/_types/album";
 import { useTranslations } from "next-intl";
+import { spotifyRequest } from "@/app/spotify-interceptor";
  const CLIENT_ID = "b58e6ec47b794973ac4757d581963dd7";
  const CLIENT_SECRET = "bd1e99b84cce48de86d6a4e921cda2ad";
 
@@ -11,17 +12,16 @@ export default function Albums() {
  const params = useParams<{ id : string }>();
  const [albumName, setAlbumName] = useState<Album[]>([]);
  const [artisteName, setArtisteName] = useState("");
- const [token, setToken] = useState<string>("");
  const t = useTranslations('album');
 useEffect(() => {
     connect();
 }, []);
 
 useEffect(() => {
-    if (token && params.id) {
+    if ( params.id) {
         getAlbums();
     }
-}, [token, params.id]);
+}, [ params.id]);
 	
  async function connect() {
         const response = await axios.post("https://accounts.spotify.com/api/token",
@@ -32,22 +32,19 @@ useEffect(() => {
             }
         });
         console.log(response.data);
-        setToken(response.data.access_token);
+        localStorage.setItem("token",response.data.access_token);
 
     }
  async function getAlbums(){
 
-     const response = await axios.get('https://api.spotify.com/v1/artists/' + params.id + '/albums?include_groups=album,single', {
-       headers : {
-        "Content-Type" : "application/x-www-form-urlencoded",
-        "Authorization" : "Bearer " + token}});
-  console.log(response.data);
+ const response = await spotifyRequest.get('https://api.spotify.com/v1/artists/' + params.id + '/albums?include_groups=album,single');
+ console.log(response.data);
   
-  let albums : Album[] = [];
-  for(let i = 0; i < response.data.items.length; i++){
-    albums.push(new Album(response.data.items[i].id, response.data.items[i].name, response.data.items[i].images[0].url));
-	 setArtisteName(response.data.items[i].artists[0].name);
-  }
+ let albums : Album[] = [];
+ for(let i = 0; i < response.data.items.length; i++){
+  albums.push(new Album(response.data.items[i].id, response.data.items[i].name, response.data.items[i].images[0].url));
+   setArtisteName(response.data.items[i].artists[0].name);
+ }
  
    setAlbumName(albums);
 
