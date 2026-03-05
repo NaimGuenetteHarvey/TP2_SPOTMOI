@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { spotifyRequest } from "@/app/spotify-interceptor";
+import { useSpotifyConnect } from "@/app/_hooks/use-spotify-hook";
 const CLIENT_ID = "b58e6ec47b794973ac4757d581963dd7";
 const CLIENT_SECRET = "bd1e99b84cce48de86d6a4e921cda2ad";
 const ApiKey = "AIzaSyC-ICUIKLPmZJHyGmN7whyt5Bs3H7mSBSk";
@@ -14,9 +15,8 @@ export default function Chanson() {
     const [songs, setSongs] = useState<string[]>([]);
     const t = useTranslations('chanson');
     const [videoUrl, setVideoUrl] = useState<string | undefined>(undefined);
-    useEffect(() => {
-        connect();
-    }, []);
+    useSpotifyConnect();
+  
 
     useEffect(() => {
         if (params.id) {
@@ -24,17 +24,7 @@ export default function Chanson() {
         }
     }, [params.id]);
 
-    async function connect() {
-        const response = await axios.post("https://accounts.spotify.com/api/token",
-            new URLSearchParams({ grant_type: "client_credentials" }), {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "Authorization": "Basic " + btoa(CLIENT_ID + ":" + CLIENT_SECRET)
-            }
-        });
-        console.log(response.data);
-        localStorage.setItem("token",response.data.access_token);
-    }
+    
 
     async function getSongs() {
 

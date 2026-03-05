@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { Album } from "@/app/_types/album";
 import { useTranslations } from "next-intl";
 import { spotifyRequest } from "@/app/spotify-interceptor";
+import { useSpotifyConnect } from "@/app/_hooks/use-spotify-hook";
  const CLIENT_ID = "b58e6ec47b794973ac4757d581963dd7";
  const CLIENT_SECRET = "bd1e99b84cce48de86d6a4e921cda2ad";
 
@@ -13,8 +14,9 @@ export default function Albums() {
  const [albumName, setAlbumName] = useState<Album[]>([]);
  const [artisteName, setArtisteName] = useState("");
  const t = useTranslations('album');
+ useSpotifyConnect();
 useEffect(() => {
-    connect();
+   
 }, []);
 
 useEffect(() => {
@@ -23,18 +25,7 @@ useEffect(() => {
     }
 }, [ params.id]);
 	
- async function connect() {
-        const response = await axios.post("https://accounts.spotify.com/api/token",
-            new URLSearchParams({ grant_type: "client_credentials" }), {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "Authorization": "Basic " + btoa(CLIENT_ID + ":" + CLIENT_SECRET)
-            }
-        });
-        console.log(response.data);
-        localStorage.setItem("token",response.data.access_token);
-
-    }
+ 
  async function getAlbums(){
 
  const response = await spotifyRequest.get('https://api.spotify.com/v1/artists/' + params.id + '/albums?include_groups=album,single');

@@ -5,34 +5,21 @@ import {Artist} from "../../_types/artiste"
 import{Album} from "../../_types/album"
 import { useTranslations } from "next-intl";
 import { spotifyRequest } from "@/app/spotify-interceptor";
- const CLIENT_ID = "b58e6ec47b794973ac4757d581963dd7";
- const CLIENT_SECRET = "bd1e99b84cce48de86d6a4e921cda2ad";
+import { useSpotifyConnect } from "@/app/_hooks/use-spotify-hook";
 
 export default function Home() {
   const t = useTranslations('Home');
-  const [token, setToken] = useState(""); 
   const [artistName, setArtistName] = useState<string>("");
   const [artist, setArtist] = useState<Artist[]>([]);
+    useSpotifyConnect();
    useEffect(() => {
-
-        connect();
+      
         const JSONArtiste : string | null = sessionStorage.getItem("artiste");
         if (JSONArtiste) setArtist(JSON.parse(JSONArtiste));
 
 
     }, []);
-    async function connect() {
-        const response = await axios.post("https://accounts.spotify.com/api/token",
-            new URLSearchParams({ grant_type: "client_credentials" }), {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "Authorization": "Basic " + btoa(CLIENT_ID + ":" + CLIENT_SECRET)
-            }
-        });
-        console.log(response.data);
-        localStorage.setItem("token",response.data.access_token);
-
-    }
+ 
  async function getArtist() {
 
         const response = await spotifyRequest.get('https://api.spotify.com/v1/search?type=artist&offset=0&limit=1&q=' + artistName );
